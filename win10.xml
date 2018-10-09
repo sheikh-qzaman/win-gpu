@@ -1,5 +1,5 @@
 <domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
-  <name>win10-2</name>
+  <name>win10</name>
   <uuid>79383740-5dcc-4447-ac17-770b0d959ba4</uuid>
   <memory unit='KiB'>8388608</memory>
   <currentMemory unit='KiB'>8388608</currentMemory>
