@@ -1,20 +1,28 @@
+<!--
+WARNING: THIS IS AN AUTO-GENERATED FILE. CHANGES TO IT ARE LIKELY TO BE
+OVERWRITTEN AND LOST. Changes to this xml configuration should be made using:
+  virsh edit win10
+or other application using the libvirt API.
+-->
+
 <domain type='kvm' xmlns:qemu='http://libvirt.org/schemas/domain/qemu/1.0'>
   <name>win10</name>
-  <uuid>79383740-5dcc-4447-ac17-770b0d959ba4</uuid>
+  <uuid>b992882c-baa4-43e6-b18d-8a8447c3287e</uuid>
   <memory unit='KiB'>8388608</memory>
   <currentMemory unit='KiB'>8388608</currentMemory>
-  <vcpu placement='static'>6</vcpu>
+  <vcpu placement='static'>4</vcpu>
   <cputune>
     <vcpupin vcpu='0' cpuset='3'/>
     <vcpupin vcpu='1' cpuset='4'/>
-    <vcpupin vcpu='2' cpuset='5'/>
-    <vcpupin vcpu='3' cpuset='9'/>
-    <vcpupin vcpu='5' cpuset='10'/>
+    <vcpupin vcpu='2' cpuset='9'/>
+    <vcpupin vcpu='3' cpuset='10'/>
+    <emulatorpin cpuset='5,11'/>
   </cputune>
   <os>
-    <type arch='x86_64' machine='pc-q35-rhel7.5.0'>hvm</type>
+    <type arch='x86_64' machine='pc-q35-2.11'>hvm</type>
     <loader readonly='yes' secure='yes' type='pflash'>/usr/share/OVMF/OVMF_CODE.secboot.fd</loader>
-    <nvram>/var/lib/libvirt/qemu/nvram/win10-2_VARS.fd</nvram>
+    <nvram>/var/lib/libvirt/qemu/nvram/win10_VARS.fd</nvram>
+    <boot dev='cdrom'/>
     <boot dev='hd'/>
   </os>
   <features>
@@ -36,15 +44,16 @@
     <suspend-to-disk enabled='no'/>
   </pm>
   <devices>
-    <emulator>/usr/libexec/qemu-kvm</emulator>
+    <emulator>/usr/bin/qemu-kvm</emulator>
     <disk type='file' device='disk'>
-      <driver name='qemu' type='raw'/>
-      <source file='/home/sheikh/libvirt/win10-2.img'/>
+      <driver name='qemu' type='qcow2'/>
+      <source file='/home/sheikh/libvirt/win10.qcow2'/>
       <target dev='sda' bus='sata'/>
       <address type='drive' controller='0' bus='0' target='0' unit='0'/>
     </disk>
     <disk type='file' device='cdrom'>
       <driver name='qemu' type='raw'/>
+      <source file='/home/sheikh/Downloads/virtio-win-0.1.160.iso'/>
       <target dev='sdb' bus='sata'/>
       <readonly/>
       <address type='drive' controller='0' bus='0' target='0' unit='1'/>
@@ -109,6 +118,12 @@
       <mac address='52:54:00:4c:09:13'/>
       <source network='default'/>
       <model type='rtl8139'/>
+      <address type='pci' domain='0x0000' bus='0x02' slot='0x03' function='0x0'/>
+    </interface>
+    <interface type='network'>
+      <mac address='52:54:00:4c:09:13'/>
+      <source network='default'/>
+      <model type='rtl8139'/>
       <address type='pci' domain='0x0000' bus='0x02' slot='0x01' function='0x0'/>
     </interface>
     <serial type='pty'>
@@ -142,6 +157,14 @@
       <model type='qxl' ram='65536' vram='65536' vgamem='16384' heads='1' primary='yes'/>
       <address type='pci' domain='0x0000' bus='0x00' slot='0x01' function='0x0'/>
     </video>
+    <hostdev mode='subsystem' type='usb' managed='yes'>
+      <source>
+        <vendor id='0x04b3'/>
+        <product id='0x310c'/>
+        <address bus='1' device='5'/>
+      </source>
+      <address type='usb' bus='0' port='5'/>
+    </hostdev>
     <hostdev mode='subsystem' type='pci' managed='yes'>
       <source>
         <address domain='0x0000' bus='0x01' slot='0x00' function='0x0'/>
@@ -158,9 +181,8 @@
       <source>
         <vendor id='0x04b3'/>
         <product id='0x310c'/>
-        <address bus='1' device='5'/>
       </source>
-      <address type='usb' bus='0' port='5'/>
+      <address type='usb' bus='0' port='6'/>
     </hostdev>
     <redirdev bus='usb' type='spicevmc'>
       <address type='usb' bus='0' port='2'/>
